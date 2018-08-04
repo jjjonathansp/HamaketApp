@@ -1,0 +1,48 @@
+<!--
+  Generated template for the RegistroPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+
+<ion-header class="opaco">
+  <ion-navbar>
+    <ion-title class="opaco"><h1 class="">Regístrate</h1></ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+
+<ion-content padding style="background: url(assets/imgs/comiendo.gif) no-repeat center;background-size:cover;" >
+  <div class="spacer" style="width: 100%; height: 30%;"></div>
+  <ion-list>
+
+  <ion-item color="light"  class="opacoNegro bordesTop">
+    <ion-label color="primary" fixed>Usuario:</ion-label>
+    <ion-input class="colorBlanco" type="text" #estadoUserName="ngModel" [(ngModel)]="usuario.nombreUsuario" name="usuario.nombreUsuario" placeholder="Nombre usuario..." required clearInput></ion-input>
+  </ion-item>
+  <ion-item color="light"  class="opacoNegro" >
+    <ion-label color="primary" fixed>Contraseña:</ion-label>
+    <ion-input class="colorBlanco" type="password" #estadoPassword="ngModel" placeholder="Contraseña..." name="usuario.password" [(ngModel)]="usuario.password" required></ion-input>
+  </ion-item>
+  <ion-item color="light"  class="opacoNegro" >
+    <ion-label color="primary" fixed></ion-label>
+    <ion-input class="colorBlanco" type="password" #estadoPassword2="ngModel" name="pass" [(ngModel)]="pass"  placeholder="Repetir contraseña..." required></ion-input>
+  </ion-item>
+  <ion-item color="light"  class="opacoNegro">
+    <ion-label color="primary" fixed>Nombre:</ion-label>
+    <ion-input class="colorBlanco" type="text" #estadoNombre="ngModel" [(ngModel)]="usuario.nombre" name="usuario.nombre" placeholder="Nombre..." required clearInput></ion-input>
+  </ion-item>
+  <ion-item color="light"  class="opacoNegro">
+    <ion-label color="primary" fixed>Apellido:</ion-label>
+    <ion-input class="colorBlanco" type="text" #estadoApellido1="ngModel" [(ngModel)]="usuario.apellido1" name="usuario.apellido1" placeholder="Primer apellido..." required clearInput></ion-input>
+  </ion-item>
+  <ion-item color="light"  class="opacoNegro bordesBot">
+    <ion-label color="primary" fixed>2º Apellido:</ion-label>
+    <ion-input class="colorBlanco" type="text" #estadoApellido2="ngModel" [(ngModel)]="usuario.apellido2" name="usuario.apellido2" placeholder="Segundo apellido..." required clearInput></ion-input>
+  </ion-item>
+</ion-list>
+<button class="fijado marginTop" ion-button round block icon-start color="dark" (click)="limpiar()"><ion-icon name="trash"></ion-icon>Limpiar</button>
+<button class="fijado marginTop" ion-button round block icon-start color="primary" (click)="registrarse()"><ion-icon name="checkmark-circle-outline"></ion-icon>Registrarse</button>
+</ion-content>

@@ -1,0 +1,7 @@
+{
+  "name": "HamaiketApp",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

@@ -1,0 +1,26 @@
+<ion-menu [content]="content"  swipeEnabled="false">
+  <ion-header>
+      <ion-toolbar>
+        <div data-componentid="imagenMenu">
+          <img src="assets/imgs/fondoMenu.jpg" style="display: block; width: 100%; height: auto; margin-left: auto; margin-right: auto;">
+        </div>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-fab top right edge>
+    <button ion-fab mini menuClose (click)="logout()"><ion-icon name="log-out"></ion-icon></button>
+      </ion-fab>
+      <ion-list>
+        <ion-item-divider color="light">Jonathan Santos Pereira</ion-item-divider>
+        <button menuClose ion-item *ngFor="let p of pages" (click)="abrirPagina(p)">
+          {{p.title}}
+          <ion-icon name="{{p.icon}}" icon-only end></ion-icon>
+        </button>
+      </ion-list>
+    </ion-content>
+
+</ion-menu>
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav [root]="rootPage" #content swipeBackEnable="false"></ion-nav>

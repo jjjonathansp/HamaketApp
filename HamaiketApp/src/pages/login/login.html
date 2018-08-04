@@ -1,0 +1,32 @@
+<ion-header class="opacoNegro">
+  <ion-toolbar>
+    <ion-title class="opacoNegro">
+      <h1 class="colorBlanco">HamaiketApp</h1>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding="false" style="background: url(assets/imgs/comiendo.gif) no-repeat center;background-size:cover;" class="fixed-content" >
+  <div class="spacer" style="width: 100%; height: 55%;"></div>
+  <div>
+  <form class="container" (ngSubmit) = "iniciarSesion()" style="max-height:40%;">
+      <ion-list id="iniciarSesiN-list3" no-lines>
+      <ion-item class="opacoNegro bordesTop">
+      <ion-label color="primary" fixed>Usuario:</ion-label>
+      <ion-input class="colorBlanco" #estadoUsuario="ngModel" name="nombreUsuario" placeholder="Usuario..." type="text" [(ngModel)]="nombreUsuario" clearInput required></ion-input>
+      </ion-item>
+      <ion-item class="opacoNegro">
+      <ion-label color="primary" fixed>Contraseña</ion-label>
+      <ion-input class="colorBlanco" #estadoPass="ngModel" name="contrasenia" placeholder="Contraseña..." type="password" [(ngModel)]="contrasenia" clearInput required></ion-input>
+      </ion-item>
+      <ion-item class="opacoNegro bordesBot" text-center>
+        <ion-label color="light" text-center>Recordarme</ion-label>
+        <ion-checkbox class="colorBlanco" [(ngModel)]="recordarLogin" name="recordarLogin"></ion-checkbox>
+      </ion-item>
+      </ion-list>
+      <button class="fijado" ion-button round block type="submit" [disabled]="!validateUsuario(estadoUsuario) || !estadoPass.valid">Acceder</button>
+      </form>
+      <button class="fijado marginTop" ion-button round block color="dark" (click)="registrate()">Regístrate</button>
+    </div>
+</ion-content>

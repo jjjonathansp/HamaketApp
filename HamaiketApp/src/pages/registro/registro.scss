@@ -1,0 +1,21 @@
+page-registro {
+    .colorBlanco{
+        color:white;
+    }
+    .select-text{
+        color:white;
+    }
+    .opacoNegro{
+        background: black;
+        opacity: 0.8;
+      }
+      .bordesTop{
+        border-radius: 15px 15px 0px 0px;
+      }
+      .bordesBot{
+        border-radius: 0px 0px 15px 15px;
+      }
+      .opaco{
+        opacity: 0.8;
+      }
+}
