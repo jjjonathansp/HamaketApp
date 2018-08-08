@@ -23,6 +23,9 @@ export class LoginPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
+
+    console.log('Probando add');
+
   }
 
 
@@ -98,7 +101,7 @@ export class LoginPage {
   
   }
   registrate(){
-    this.usuario= new UsuarioModel('','','','','');
+    //this.usuario= new UsuarioModel('','','','','');
     /*let modal = this.modalCtrl.create(RegistroPage);
     modal.present();
     modal.onDidDismiss(usuario => {

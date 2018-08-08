@@ -16,7 +16,7 @@ import { UsuarioModel } from '../../shared/usuarioModel';
 })
 export class RegistroPage {
 
-  usuario:UsuarioModel=new UsuarioModel('','','','','');
+  //usuario:UsuarioModel=new UsuarioModel('','','','','');
   pass:string='';
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
@@ -25,18 +25,18 @@ export class RegistroPage {
     console.log('ionViewDidLoad RegistroPage');
   }
   validarPass() {
-    if(this.pass===this.usuario.password) {
+    /*if(this.pass===this.usuario.password) {
       console.log("true");
       return true;
     } else {
       console.log("false");
       return false;
-    }
+    }*/
   }
 
   limpiar(){
     console.log("limpiar");
-    this.usuario = new UsuarioModel('','','','','');
+   // this.usuario = new UsuarioModel('','','','','');
     this.pass= '';
   }
 

@@ -14,6 +14,8 @@ import { FormsModule } from '../../node_modules/@angular/forms';
 import { HttpModule } from '../../node_modules/@angular/http';
 import { RegistroPage } from '../pages/registro/registro';
 
+import { FirebaseServiceProvider } from '../providers/firebase-service/firebase-service';
+
 
 @NgModule({
   declarations: [
@@ -44,7 +46,8 @@ import { RegistroPage } from '../pages/registro/registro';
     StatusBar,
     SplashScreen,
     UsuariosServiceProvider,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    FirebaseServiceProvider
   ]
 })
 export class AppModule {}
