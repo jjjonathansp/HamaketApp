@@ -1,18 +1,50 @@
 page-login {
-    .colorBlanco{
-        color:white;
-    }
-    .select-text{
-        color:white;
-    }
-    .opacoNegro{
-        background: black;
-        opacity: 0.8;
-      }
-      .bordesTop{
-        border-radius: 15px 15px 0px 0px;
-      }
-      .bordesBot{
-        border-radius: 0px 0px 15px 15px;
-      }
+  .error-message
+  {
+   color: #bf3e3e;
+   margin-left: 1em;
+  }
+
+  .go-to-register
+  {
+    text-align: center;
+    margin-top: 5px;
+  }
+
+  .submit-btn
+  {
+    border-radius: 6px;
+	  font-size: 1.6rem;
+    font-weight: 500;
+  }
+  .text-input-md {
+    color:white;
+  }
+
+  .colorBlanco{
+    color:white;
+}
+.select-text{
+    color:white;
+}
+.colorRojo {
+  color:red;
+}
+.opacoNegro{
+    background: black;
+    opacity: 0.8;
+  }
+  .bordesTop{
+    border-radius: 15px 15px 0px 0px;
+  }
+  .bordesBot{
+    border-radius: 0px 0px 15px 15px;
+  }
+  .bordesAll{
+    text-align: center;
+    border-radius: 15px 15px 15px 15px;
+  }
+  .opaco{
+    opacity: 0.8;
+  }
 }

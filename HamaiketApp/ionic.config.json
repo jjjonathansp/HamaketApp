@@ -1,5 +1,5 @@
 {
-  "name": "HamaiketApp",
+  "name": "ionic-firebase-crud-example",
   "integrations": {
     "cordova": {}
   },
