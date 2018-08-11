@@ -10,6 +10,7 @@ import { AuthService } from '../services/auth.service';
 import { LoginModel } from '../../shared/loginModel';
 
 import { Storage } from '@ionic/storage';
+import { HomePage } from '../home/home';
 
 @Component({
   selector: 'page-login',
@@ -80,7 +81,7 @@ export class LoginPage {
       if(value.recordarLogin == true) {
         this.setLogin(new LoginModel(value.email, value.password));
       }
-      this.navCtrl.push(MenuPage);
+      this.navCtrl.setRoot(HomePage);
     }, err => {
       this.errorMessage = err.message;
     })

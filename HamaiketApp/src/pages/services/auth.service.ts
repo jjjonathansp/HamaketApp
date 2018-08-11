@@ -33,7 +33,9 @@ export class AuthService {
       if(firebase.auth().currentUser){
         firebase.auth().signOut()
         .then(() => {
-          this.firebaseService.unsubscribeOnLogOut();
+          try {
+            this.firebaseService.unsubscribeOnLogOut();
+          }catch(err) {}
           resolve();
         }).catch((error) => {
           reject();
