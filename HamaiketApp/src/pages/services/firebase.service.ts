@@ -3,6 +3,8 @@ import 'rxjs/add/operator/toPromise';
 import { AngularFirestore } from 'angularfire2/firestore';
 import * as firebase from 'firebase';
 import 'firebase/storage';
+import { LoginModel } from "../../shared/loginModel";
+import { UsuarioModel } from "../../shared/usuarioModel";
 
 @Injectable()
 export class FirebaseService {
@@ -43,6 +45,39 @@ export class FirebaseService {
       this.afs.collection('people').doc(currentUser.uid).collection('tasks').doc(taskKey).delete()
       .then(
         res => resolve(res),
+        err => reject(err)
+      )
+    })
+  }
+
+  getLoggedUser(){
+    return new Promise<any>((resolve, reject) => {
+      let currentUser = firebase.auth().currentUser;
+     resolve(currentUser);
+      
+    });
+  }
+  getUsuario(){
+    return new Promise<any>((resolve, reject) => {
+      let currentUser = firebase.auth().currentUser;
+      this.afs.collection('people').doc(currentUser.uid).collection('USUARIOS', ref => ref.where('email', '==', currentUser.email)).snapshotChanges().subscribe(snapshots => {
+        resolve(snapshots);
+      });
+      
+    });
+  }
+
+  saveUsuario(usuario:UsuarioModel) {
+    return new Promise<any>((resolve, reject) => {
+      let currentUser = firebase.auth().currentUser;
+      this.afs.collection('people').doc(currentUser.uid).collection('USUARIOS').add({
+        nombreUsuario: usuario.nombreUsuario,
+        saldo: usuario.saldo,
+        imagen: usuario.imagen,
+        email: currentUser.email
+      })
+      .then(
+        res => {resolve(new UsuarioModel(res.id,usuario.nombreUsuario,usuario.saldo,usuario.imagen,usuario.email));},
         err => reject(err)
       )
     })

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-
+import { FirebaseService } from '../services/firebase.service';
+import { StorageService } from '../services/storage.service';
+import { UsuarioModel } from '../../shared/usuarioModel';
+import { PerfilUsuarioPage } from '../perfil-usuario/perfil-usuario';
 
 @Component({
   selector: 'page-home',
@@ -8,8 +11,34 @@ import { NavController } from 'ionic-angular';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController) {
+  usuarioLogado:UsuarioModel = new UsuarioModel("","",0,"./assets/imgs/anonimo.png","");
+  constructor(
+    public navCtrl: NavController,
+    public storageService: StorageService,
+    public firebaseService: FirebaseService
+  ) {
     
+
+    
+  }
+
+  ionViewWillEnter(){
+
+    this.firebaseService.getUsuario().then((usuario:any)=>{
+      console.log("Usuario:");
+      if(usuario!=null && usuario.length>0) {
+        this.usuarioLogado = UsuarioModel.fromFB(usuario);
+        this.storageService.setUsuario(this.usuarioLogado);
+      } else {
+        this.abrirPaginaPerfil();
+      }
+    });
+
+  }
+
+  abrirPaginaPerfil() {
+    
+    this.navCtrl.push(PerfilUsuarioPage, {'mensaje':true});
     
   }
 

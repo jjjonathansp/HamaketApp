@@ -23,6 +23,8 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environment/environment';
 import { HomePage } from '../pages/home/home';
 import { IonicStorageModule } from '@ionic/storage';
+import { StorageService } from '../pages/services/storage.service';
+import { PerfilUsuarioPage } from '../pages/perfil-usuario/perfil-usuario';
 
 
 @NgModule({
@@ -33,6 +35,7 @@ import { IonicStorageModule } from '@ionic/storage';
     MenuPage,
     HomePage,
     NewTaskModalPage,
+    PerfilUsuarioPage,
     DetailsPage
   ],
   imports: [
@@ -55,6 +58,7 @@ import { IonicStorageModule } from '@ionic/storage';
     RegisterPage,
     HomePage,
     MenuPage,
+    PerfilUsuarioPage,
     NewTaskModalPage,
     DetailsPage
   ],
@@ -64,6 +68,7 @@ import { IonicStorageModule } from '@ionic/storage';
     ImagePicker,
     FirebaseService,
     AuthService,
+    StorageService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

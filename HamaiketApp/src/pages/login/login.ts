@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController } from 'ionic-angular';
 
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
@@ -11,6 +11,7 @@ import { LoginModel } from '../../shared/loginModel';
 
 import { Storage } from '@ionic/storage';
 import { HomePage } from '../home/home';
+import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'page-login',
@@ -35,11 +36,13 @@ export class LoginPage {
     private navCtrl: NavController,
     private authService: AuthService,
     private formBuilder: FormBuilder,
+    public loadingCtrl: LoadingController,
+    public storageService: StorageService,
     public storage: Storage
   ) {}
 
   ionViewWillLoad(){
-    
+    this.storageService.setUsuarioEMPTY();
     this.getLogin().then((log:LoginModel) => {
       console.log("log"+log);
       this.loginValue = log;
@@ -75,7 +78,7 @@ export class LoginPage {
 
   tryLogin(value){
     console.log("RECORDAR:"+value.recordarLogin);
-
+    this.presentLoading();
     this.authService.doLogin(value)
     .then(res => {
       if(value.recordarLogin == true) {
@@ -125,4 +128,11 @@ export class LoginPage {
     
   }
 
+  presentLoading() {
+    const loader = this.loadingCtrl.create({
+      content: "Cargando...",
+      duration: 500
+    });
+    loader.present();
+  }
 }
