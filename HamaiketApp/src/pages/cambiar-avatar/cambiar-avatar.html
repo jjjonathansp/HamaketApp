@@ -1,0 +1,45 @@
+<!--
+  Generated template for the CambiarAvatarPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>CambiarAvatar</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <div class="spacer" style="width:300px;height:17px;"></div>
+  <div>
+    <ion-row no-padding>
+      <ion-col col-3 class="middle-content" (click)="before()"> 
+          <ion-icon name="arrow-back"></ion-icon>
+      </ion-col>
+      <ion-col no-padding col-6>
+        <img [src]="avatarActual.imagen" alt="Avatar" class="circle-img"/>
+      </ion-col>
+      <ion-col col-3 class="middle-content" (click)="next()">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-col>
+    </ion-row>
+    <ion-row no-padding class="user-image-row">
+      <ion-col col-6><button class="image-action-button" ion-button outline block large (click)="cambiarChicos()"><ion-icon name="male"></ion-icon></button></ion-col>
+      <ion-col col-6><button class="image-action-button" ion-button outline block large (click)="cambiarChicas()"><ion-icon name="female"></ion-icon></button></ion-col>
+    </ion-row>
+    <ion-row no-padding class="user-image-row">
+      <ion-col no-padding width-60>
+        <button class="image-action-button" ion-button outline block small (click)="cambiarAvatar()">Cambiar Avatar</button>
+      </ion-col>
+    </ion-row>
+  </div>
+  <button ion-button color="" block small style="font-weight:500;" (click)="seleccionar()">
+    Seleccionar Avatar
+  </button>
+
+</ion-content>

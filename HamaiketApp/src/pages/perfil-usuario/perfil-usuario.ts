@@ -6,6 +6,7 @@ import { UsuarioModel } from '../../shared/usuarioModel';
 import { LoginModel } from '../../shared/loginModel';
 import { LoginPage } from '../login/login';
 import { AuthService } from '../services/auth.service';
+import { CambiarAvatarPage } from '../cambiar-avatar/cambiar-avatar';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { AuthService } from '../services/auth.service';
   templateUrl: 'perfil-usuario.html',
 })
 export class PerfilUsuarioPage {
-
+  guardado:boolean = false;
   loginUsuario:LoginModel = null;
   usuarioLogado:UsuarioModel = new UsuarioModel("","",0, "./assets/imgs/anonimo.png", "");
   constructor(public navCtrl: NavController,
@@ -49,11 +50,11 @@ export class PerfilUsuarioPage {
           if(loged!=null && loged.length>0) {
             
             console.log("usuario logeado");
-            debugger;
             this.usuarioLogado = UsuarioModel.fromFB(loged);
             this.storageService.setUsuario(this.usuarioLogado);
+            this.guardado = true;
           } else {
-            console.log("Usuario sin guardar en BBDD. Email:"+loged.email);
+            console.log("Usuario sin guardar en BBDD.");
             this.usuarioLogado = new UsuarioModel("","",0, "./assets/imgs/anonimo.png","");
           }
         });
@@ -72,20 +73,35 @@ export class PerfilUsuarioPage {
   }
   cambiarAvatar(){
     console.log("Cambio Avatar");
+    this.navCtrl.push(CambiarAvatarPage);
+
   }
 
   guardar(){
     console.log("guardar!"+this.usuarioLogado.nombreUsuario);
     
     if(this.usuarioLogado.nombreUsuario!=null && this.usuarioLogado.nombreUsuario!="") {
-      this.firebaseService.saveUsuario(this.usuarioLogado).then((usuario)=>
-      {
-        this.storageService.setUsuario(usuario);
-        this.usuarioLogado = usuario;
-        this.navCtrl.pop();
-      });
+      
+      if(!this.guardado) {
+        this.firebaseService.saveUsuario(this.usuarioLogado).then((usuario)=>
+        {
+          this.storageService.setUsuario(usuario);
+          this.usuarioLogado = usuario;
+          this.navCtrl.pop();
+        });
+
+      }else {
+        this.firebaseService.updateUsuario(this.usuarioLogado).then((usuario)=>
+        {
+          this.storageService.setUsuario(usuario);
+          this.usuarioLogado = usuario;
+          this.navCtrl.pop();
+        });
+      }
     }
   }
 
+
+  
 
 }

@@ -67,21 +67,7 @@ export class FirebaseService {
     });
   }
 
-  saveUsuario(usuario:UsuarioModel) {
-    return new Promise<any>((resolve, reject) => {
-      let currentUser = firebase.auth().currentUser;
-      this.afs.collection('people').doc(currentUser.uid).collection('USUARIOS').add({
-        nombreUsuario: usuario.nombreUsuario,
-        saldo: usuario.saldo,
-        imagen: usuario.imagen,
-        email: currentUser.email
-      })
-      .then(
-        res => {resolve(new UsuarioModel(res.id,usuario.nombreUsuario,usuario.saldo,usuario.imagen,usuario.email));},
-        err => reject(err)
-      )
-    })
-  }
+  
 
   createTask(value){
     return new Promise<any>((resolve, reject) => {
@@ -129,6 +115,40 @@ export class FirebaseService {
     })
   }
 
+//USUARIO
+
+  saveUsuario(usuario:UsuarioModel) {
+    return new Promise<any>((resolve, reject) => {
+      let currentUser = firebase.auth().currentUser;
+      this.afs.collection('people').doc(currentUser.uid).collection('USUARIOS').add({
+        nombreUsuario: usuario.nombreUsuario,
+        saldo: usuario.saldo,
+        imagen: usuario.imagen,
+        email: currentUser.email
+      })
+      .then(
+        res => {resolve(new UsuarioModel(res.id,usuario.nombreUsuario,usuario.saldo,usuario.imagen,usuario.email));},
+        err => reject(err)
+      )
+    })
+  }
+
+  updateUsuario(usuario){
+    return new Promise<any>((resolve, reject) => {
+      let currentUser = firebase.auth().currentUser;
+      this.afs.collection('people').doc(currentUser.uid).collection('USUARIOS').doc(usuario.key).set(
+        {
+          nombreUsuario:usuario.nombreUsuario,
+          saldo:usuario.saldo,
+          imagen:usuario.imagen,
+          email:usuario.email
+        })
+      .then(
+        res => {resolve(usuario);},
+        err => reject(err)
+      )
+    })
+  }
 
 
 }

@@ -32,7 +32,7 @@
                   </div>
               </ng-container>
           </div>
-          <ion-item class="opacoNegro bordesBot" text-center>
+          <ion-item class="opacoNegro" text-center>
             <ion-label color="light" text-center>Recordarme</ion-label>
             <ion-checkbox class="colorBlanco" formControlName="recordarLogin" class="form-controll"></ion-checkbox>
           </ion-item>
@@ -42,7 +42,7 @@
     <button class="submit-btn"  ion-button round block type="submit" [disabled]="!validations_form.valid">Acceder</button>
     <label class="error-message">{{errorMessage}}</label>
   </form>
-  <p class="go-to-register colorBlanco opacoNegro bordesAll">
+  <p class="go-to-register colorBlanco opacoNegro">
     No tienes cuenta? <a class="" (click)="goRegisterPage()">Crea una cuenta.</a>
   </p>
 </ion-content>

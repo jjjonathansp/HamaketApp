@@ -42,4 +42,8 @@ export class HomePage {
     
   }
 
+  editarPerfil() {
+    this.navCtrl.push(PerfilUsuarioPage, {'mensaje':null});
+  }
+
 }

@@ -15,8 +15,8 @@ export class UsuarioModel{
         }
         return new UsuarioModel(usuario[0].payload.doc._key.path.get(3),
         usuario[0].payload.doc.data().nombreUsuario.toString(),
-        usuario[0].payload.doc.data().imagen.toString(),
         usuario[0].payload.doc.data().saldo,
+        usuario[0].payload.doc.data().imagen.toString(),
         usuario[0].payload.doc.data().email.toString());
     }
 }
