@@ -13,7 +13,7 @@
   <ion-list id="inicio-list4">
     <ion-item color="">
       <ion-avatar item-left>
-        <img src="assets/imgs/chicos/3.png" />
+        <img [src]="usuarioLogado.imagen" />
       </ion-avatar>
       <h2>
         {{usuarioLogado.nombreUsuario}}
@@ -31,7 +31,7 @@
   <ion-grid>
   <ion-row>
     <ion-col col-6>
-        <button id="inicio-button4" ion-button color="" block small>
+        <button ion-button color="" block small (click)="crearGrupo()">
             <ion-icon name="add"></ion-icon>
             &nbsp;Crear Grupo
         </button>

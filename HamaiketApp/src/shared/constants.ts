@@ -1,0 +1,5 @@
+export const USUARIOS_TABLE = "USUARIOS";
+export const RELA_GRUPO_USUARIO_TABLE = "RELA_USU_GRUPO";
+export const GRUPOS_TABLE = "GRUPOS";
+export const ELEMENTOS_TABLE = "ELEMENTOS";
+export const PEDIDOS_TABLE = "PEDIDOS";

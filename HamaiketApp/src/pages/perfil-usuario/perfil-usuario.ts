@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController,ModalController } from 'ionic-angular';
 import { StorageService } from '../services/storage.service';
 import { FirebaseService } from '../services/firebase.service';
 import { UsuarioModel } from '../../shared/usuarioModel';
@@ -22,15 +22,12 @@ export class PerfilUsuarioPage {
     public authService: AuthService,
     public firebaseService: FirebaseService,
     public navParams:NavParams,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public modalCtrl: ModalController
   ) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PerfilUsuarioPage');
-  }
-
-  ionViewWillEnter(){
     if(this.navParams.get('mensaje')!=null && this.navParams.get('mensaje')!='') {
       this.alertaPrimerAcceso();
     }
@@ -50,6 +47,7 @@ export class PerfilUsuarioPage {
           if(loged!=null && loged.length>0) {
             
             console.log("usuario logeado");
+
             this.usuarioLogado = UsuarioModel.fromFB(loged);
             this.storageService.setUsuario(this.usuarioLogado);
             this.guardado = true;
@@ -61,8 +59,9 @@ export class PerfilUsuarioPage {
 
       }
     });
-
   }
+
+  
   alertaPrimerAcceso() {
     const alert = this.alertCtrl.create({
       title: 'Hola!',
@@ -73,9 +72,16 @@ export class PerfilUsuarioPage {
   }
   cambiarAvatar(){
     console.log("Cambio Avatar");
-    this.navCtrl.push(CambiarAvatarPage);
+    
+    let avatarModal = this.modalCtrl.create(CambiarAvatarPage, {"usuario":this.usuarioLogado});
+    avatarModal.onDidDismiss(data => {
+      this.usuarioLogado.imagen = data.imagen;
+    });
+    avatarModal.present();
 
   }
+
+
 
   guardar(){
     console.log("guardar!"+this.usuarioLogado.nombreUsuario);

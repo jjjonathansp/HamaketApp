@@ -3,17 +3,20 @@ import 'rxjs/add/operator/toPromise';
 import { AngularFirestore } from 'angularfire2/firestore';
 import * as firebase from 'firebase';
 import 'firebase/storage';
-import { LoginModel } from "../../shared/loginModel";
 import { UsuarioModel } from "../../shared/usuarioModel";
+import { USUARIOS_TABLE, RELA_GRUPO_USUARIO_TABLE, GRUPOS_TABLE } from "../../shared/constants";
+import { GrupoModel } from "../../shared/grupoModel";
+import { RelaUsuGrupoModel } from "../../shared/relaUsuGrupoModel";
 
 @Injectable()
 export class FirebaseService {
+  
 
   private snapshotChangesSubscription: any;
   constructor(public afs: AngularFirestore){}
 
   getTasks(){
-    return new Promise<any>((resolve, reject) => {
+    return new Promise<any>((resolve) => {
       let currentUser = firebase.auth().currentUser;
       this.snapshotChangesSubscription = this.afs.collection('people').doc(currentUser.uid).collection('tasks').snapshotChanges()
       .subscribe(snapshots => {
@@ -50,22 +53,7 @@ export class FirebaseService {
     })
   }
 
-  getLoggedUser(){
-    return new Promise<any>((resolve, reject) => {
-      let currentUser = firebase.auth().currentUser;
-     resolve(currentUser);
-      
-    });
-  }
-  getUsuario(){
-    return new Promise<any>((resolve, reject) => {
-      let currentUser = firebase.auth().currentUser;
-      this.afs.collection('people').doc(currentUser.uid).collection('USUARIOS', ref => ref.where('email', '==', currentUser.email)).snapshotChanges().subscribe(snapshots => {
-        resolve(snapshots);
-      });
-      
-    });
-  }
+  
 
   
 
@@ -115,12 +103,31 @@ export class FirebaseService {
     })
   }
 
-//USUARIO
+  //--------------------------------------------------------------------------------------------------------------------------------------------------------
+  //USUARIO------------------------------------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  getLoggedUser(){
+    return new Promise<any>((resolve) => {
+      let currentUser = firebase.auth().currentUser;
+    resolve(currentUser);
+      
+    });
+  }
+  getUsuario(){
+    return new Promise<any>((resolve) => {
+      let currentUser = firebase.auth().currentUser;
+      this.afs.collection('people').doc(currentUser.uid).collection(USUARIOS_TABLE, ref => ref.where('email', '==', currentUser.email)).snapshotChanges().subscribe(snapshots => {
+        resolve(snapshots);
+      });
+      
+    });
+  }
 
   saveUsuario(usuario:UsuarioModel) {
     return new Promise<any>((resolve, reject) => {
       let currentUser = firebase.auth().currentUser;
-      this.afs.collection('people').doc(currentUser.uid).collection('USUARIOS').add({
+      this.afs.collection('people').doc(currentUser.uid).collection(USUARIOS_TABLE).add({
         nombreUsuario: usuario.nombreUsuario,
         saldo: usuario.saldo,
         imagen: usuario.imagen,
@@ -136,7 +143,7 @@ export class FirebaseService {
   updateUsuario(usuario){
     return new Promise<any>((resolve, reject) => {
       let currentUser = firebase.auth().currentUser;
-      this.afs.collection('people').doc(currentUser.uid).collection('USUARIOS').doc(usuario.key).set(
+      this.afs.collection('people').doc(currentUser.uid).collection(USUARIOS_TABLE).doc(usuario.key).set(
         {
           nombreUsuario:usuario.nombreUsuario,
           saldo:usuario.saldo,
@@ -144,11 +151,107 @@ export class FirebaseService {
           email:usuario.email
         })
       .then(
-        res => {resolve(usuario);},
+        () => { resolve(usuario); },
         err => reject(err)
       )
     })
   }
 
+  //--------------------------------------------------------------------------------------------------------------------------------------------------------
+  // RELACION GRUPO Y USUARIO--------------------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------------------------------------------
+  getRelaGruposUsuario(userId:String){
+    return new Promise<any>((resolve) => {
+      let currentUser = firebase.auth().currentUser;
+      this.afs.collection('people').doc(currentUser.uid).collection(RELA_GRUPO_USUARIO_TABLE, ref => ref.where('usuario', '==', userId)).snapshotChanges().subscribe(snapshots => {
+        let relaciones:Array<RelaUsuGrupoModel> = [];
+        if(snapshots) {
+          for(let i=0;i<snapshots.length;i++) {
+            let relacion = RelaUsuGrupoModel.fromFB(snapshots[i]);
+            relaciones.push(relacion);
+          }
+        }
+        
+        resolve(relaciones);
+      });
+      
+    });
+  }
+
+  addRelaGrupoUsuario(relaGrupousuario:RelaUsuGrupoModel) {
+    return new Promise<any>((resolve, reject) => {
+      let currentUser = firebase.auth().currentUser;
+      this.afs.collection('people').doc(currentUser.uid).collection(RELA_GRUPO_USUARIO_TABLE).add({
+        grupo: relaGrupousuario.grupo,
+        usuario: relaGrupousuario.usuario,
+        admin: relaGrupousuario.admin
+      })
+      .then(
+        res => {resolve(new RelaUsuGrupoModel(res.id,relaGrupousuario.grupo,relaGrupousuario.usuario,relaGrupousuario.admin));},
+        err => reject(err)
+      )
+    })
+  }
+
+  updateRelaGrupoUsuario(relaGrupousuario){
+    return new Promise<any>((resolve, reject) => {
+      let currentUser = firebase.auth().currentUser;
+      this.afs.collection('people').doc(currentUser.uid).collection(RELA_GRUPO_USUARIO_TABLE).doc(relaGrupousuario.key).set(
+        {
+          grupo: relaGrupousuario.grupo,
+          usuario: relaGrupousuario.usuario,
+          admin: relaGrupousuario.admin
+        })
+      .then(
+        () => { resolve(relaGrupousuario); },
+        err => reject(err)
+      )
+    })
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------------------------------------------
+  //GRUPO ---------------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------------------------------------------
+  addGrupo(grupo:GrupoModel) {
+    return new Promise<any>((resolve, reject) => {
+      let currentUser = firebase.auth().currentUser;
+      this.afs.collection('people').doc(currentUser.uid).collection(GRUPOS_TABLE).add({
+        nombre: grupo.nombre,
+        saldo: grupo.saldo,
+        clave: grupo.clave ? this.codificar(grupo.clave): ""
+      })
+      .then(
+        res => {resolve(new GrupoModel(res.id,grupo.nombre,grupo.saldo,grupo.clave));},
+        err => reject(err)
+      )
+    })
+  }
+
+  updateGrupo(grupo){
+    return new Promise<any>((resolve, reject) => {
+      let currentUser = firebase.auth().currentUser;
+      this.afs.collection('people').doc(currentUser.uid).collection(GRUPOS_TABLE).doc(grupo.key).set(
+        {
+          nombre: grupo.nombre,
+          saldo: grupo.saldo,
+          clave: grupo.clave ? this.codificar(grupo.clave): ""
+        })
+      .then(
+        () => { resolve(grupo); },
+        err => reject(err)
+      )
+    })
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------------------------------------------
+  //CODIFICAR
+  //--------------------------------------------------------------------------------------------------------------------------------------------------------
+  codificar(valor:string) {
+    return btoa(valor.toString())
+  }
+
+  descodificar(valor:string) {
+    return atob(valor);
+  }
 
 }

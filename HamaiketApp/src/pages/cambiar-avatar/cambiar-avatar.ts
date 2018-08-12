@@ -1,15 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ViewController, NavParams } from 'ionic-angular';
 import { AvatarModel } from '../../shared/avatarModel';
+import { StorageService } from '../services/storage.service';
+import { UsuarioModel } from '../../shared/usuarioModel';
+import { FirebaseService } from '../services/firebase.service';
 
-/**
- * Generated class for the CambiarAvatarPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
   selector: 'page-cambiar-avatar',
   templateUrl: 'cambiar-avatar.html',
@@ -23,9 +18,111 @@ export class CambiarAvatarPage {
   public avatarActual:AvatarModel = new AvatarModel("","");
   public indice:number=0;
   public max:number = 0;
+  public usuarioLogado:UsuarioModel = null;
+  public avatarInicial:String = null
     
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public viewCtrl: ViewController,
+    public storageService:StorageService,
+    public params: NavParams,
+    public firebaseService:FirebaseService
+  ) {
 
+    this.cargarAvatares();
+
+    this.avatares = this.avataresChicos;
+    this.indice = 0;
+    this.max = this.avatares.length;
+    this.avatarActual = this.avatares[this.indice];
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad CambiarAvatarPage');
+    this.avatares = this.avataresChicos;
+    this.indice = 0;
+    this.max = this.avatares.length;
+    this.avatarActual = this.avatares[this.indice];
+    this.usuarioLogado = this.params.get("usuario");
+    this.avatarInicial = this.usuarioLogado.imagen;
+    this.seleccionarAvatarUsuario();
+  }
+
+  cambiarChicos() {
+    this.indice = 0;
+    this.avatares = this.avataresChicos;
+    this.max = this.avatares.length;
+    this.avatarActual = this.avatares[this.indice];
+
+  }
+
+  cambiarChicas() {
+    this.indice = 0;
+    this.avatares = this.avataresChicas;
+    this.max = this.avatares.length;
+    this.avatarActual = this.avatares[this.indice];
+
+  }
+
+  next() {
+    let indicePlus = this.indice + 1;
+    let max = this.avatares.length-1;
+    if( indicePlus > max) {
+      this.indice = 0;
+      this.avatarActual = this.avatares[this.indice];
+    } else {
+      this.indice = indicePlus;
+      this.max = this.avatares.length;
+      this.avatarActual = this.avatares[this.indice];
+    }
+  }
+
+  before() {
+    let indiceMin = this.indice - 1;
+    let max = this.avatares.length-1;
+    if( indiceMin > 0) {
+      this.indice = indiceMin;
+      this.max = this.avatares.length;
+      this.avatarActual = this.avatares[this.indice];
+    } else {
+      this.indice = max;
+      this.avatarActual = this.avatares[this.indice];
+    }
+  }
+
+  seleccionarAvatarUsuario(){
+    if(this.usuarioLogado.imagen.indexOf("chicos")!=-1) {
+      //es una imagen de chico.
+      for(let i=0;i<this.avataresChicos.length;i++) {
+        if(this.avataresChicos[i].imagen == this.usuarioLogado.imagen) {
+          this.indice = i;
+          this.avatares = this.avataresChicos;
+          this.avatarActual = this.avatares[i];
+          break;
+        }
+      }
+    } else  if(this.usuarioLogado.imagen.indexOf("chicas")!=-1) {
+      //es una imagen de chica.
+      for(let i=0;i<this.avataresChicas.length;i++) {
+        if(this.avataresChicas[i].imagen == this.usuarioLogado.imagen) {
+          this.indice = i;
+          this.avatares = this.avataresChicas;
+          this.avatarActual = this.avatares[i];
+          break;
+        }
+      }
+    } else {
+      //es un anonimo
+    }
+  }
+
+  seleccionarAvatar(){
+    this.viewCtrl.dismiss(this.avatarActual);
+  }
+  cancelarAvatar() {
+    this.viewCtrl.dismiss(new AvatarModel(this.avatarInicial,"H"));
+  }
+
+  cargarAvatares() {
     this.avataresChicos = [
       new AvatarModel("./assets/imgs/chicos/1.png","H"),
       new AvatarModel("./assets/imgs/chicos/2.png","H"),
@@ -71,60 +168,5 @@ export class CambiarAvatarPage {
 
 
     ];
-
-    this.avatares = this.avataresChicos;
-    this.indice = 0;
-    this.max = this.avatares.length;
-    this.avatarActual = this.avatares[this.indice];
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CambiarAvatarPage');
-    this.avatares = this.avataresChicos;
-    this.indice = 0;
-    this.max = this.avatares.length;
-    this.avatarActual = this.avatares[this.indice];
-  }
-
-  cambiarChicos() {
-    this.indice = 0;
-    this.avatares = this.avataresChicos;
-    this.max = this.avatares.length;
-    this.avatarActual = this.avatares[this.indice];
-
-  }
-
-  cambiarChicas() {
-    this.indice = 0;
-    this.avatares = this.avataresChicas;
-    this.max = this.avatares.length;
-    this.avatarActual = this.avatares[this.indice];
-
-  }
-
-  next() {
-    let indicePlus = this.indice + 1;
-    let max = this.avatares.length-1;
-    if( indicePlus > max) {
-      this.indice = 0;
-      this.avatarActual = this.avatares[this.indice];
-    } else {
-      this.indice = indicePlus;
-      this.max = this.avatares.length;
-      this.avatarActual = this.avatares[this.indice];
-    }
-  }
-
-  before() {
-    let indiceMin = this.indice - 1;
-    let max = this.avatares.length-1;
-    if( indiceMin > 0) {
-      this.indice = indiceMin;
-      this.max = this.avatares.length;
-      this.avatarActual = this.avatares[this.indice];
-    } else {
-      this.indice = max;
-      this.avatarActual = this.avatares[this.indice];
-    }
   }
 }

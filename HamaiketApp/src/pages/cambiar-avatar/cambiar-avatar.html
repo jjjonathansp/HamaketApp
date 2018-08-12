@@ -32,14 +32,13 @@
       <ion-col col-6><button class="image-action-button" ion-button outline block large (click)="cambiarChicos()"><ion-icon name="male"></ion-icon></button></ion-col>
       <ion-col col-6><button class="image-action-button" ion-button outline block large (click)="cambiarChicas()"><ion-icon name="female"></ion-icon></button></ion-col>
     </ion-row>
-    <ion-row no-padding class="user-image-row">
-      <ion-col no-padding width-60>
-        <button class="image-action-button" ion-button outline block small (click)="cambiarAvatar()">Cambiar Avatar</button>
-      </ion-col>
-    </ion-row>
+    
   </div>
-  <button ion-button color="" block small style="font-weight:500;" (click)="seleccionar()">
-    Seleccionar Avatar
+  <button ion-button color="" block small style="font-weight:500;" (click)="seleccionarAvatar()">
+    Guardar cambios
+  </button>
+  <button ion-button color="danger" block small style="font-weight:500;" (click)="cancelarAvatar()">
+    Cancelar
   </button>
 
 </ion-content>

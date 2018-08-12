@@ -4,6 +4,7 @@ import { FirebaseService } from '../services/firebase.service';
 import { StorageService } from '../services/storage.service';
 import { UsuarioModel } from '../../shared/usuarioModel';
 import { PerfilUsuarioPage } from '../perfil-usuario/perfil-usuario';
+import { NuevoGrupoPage } from '../nuevo-grupo/nuevo-grupo';
 
 @Component({
   selector: 'page-home',
@@ -16,10 +17,7 @@ export class HomePage {
     public navCtrl: NavController,
     public storageService: StorageService,
     public firebaseService: FirebaseService
-  ) {
-    
-
-    
+  ) {  
   }
 
   ionViewWillEnter(){
@@ -44,6 +42,10 @@ export class HomePage {
 
   editarPerfil() {
     this.navCtrl.push(PerfilUsuarioPage, {'mensaje':null});
+  }
+
+  nuevoGrupo() {
+    this.navCtrl.push(NuevoGrupoPage);
   }
 
 }

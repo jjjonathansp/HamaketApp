@@ -26,6 +26,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { StorageService } from '../pages/services/storage.service';
 import { PerfilUsuarioPage } from '../pages/perfil-usuario/perfil-usuario';
 import { CambiarAvatarPage } from '../pages/cambiar-avatar/cambiar-avatar';
+import { NuevoGrupoPage } from '../pages/nuevo-grupo/nuevo-grupo';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { CambiarAvatarPage } from '../pages/cambiar-avatar/cambiar-avatar';
     NewTaskModalPage,
     PerfilUsuarioPage,
     CambiarAvatarPage,
+    NuevoGrupoPage,
     DetailsPage
   ],
   imports: [
@@ -63,6 +65,7 @@ import { CambiarAvatarPage } from '../pages/cambiar-avatar/cambiar-avatar';
     PerfilUsuarioPage,
     NewTaskModalPage,
     CambiarAvatarPage,
+    NuevoGrupoPage,
     DetailsPage
   ],
   providers: [
