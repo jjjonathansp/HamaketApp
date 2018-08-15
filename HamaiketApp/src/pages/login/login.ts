@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController } from 'ionic-angular';
+import { NavController, LoadingController, NavParams } from 'ionic-angular';
 
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
@@ -31,25 +31,28 @@ export class LoginPage {
      { type: 'minlength', message: 'La contraseña debe ser al menos de 5 caracteres.' }
    ]
  };
+  salir:boolean = false;
   loginValue:LoginModel = null;
   constructor(
     private navCtrl: NavController,
+    private navParams:NavParams,
     private authService: AuthService,
     private formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public storageService: StorageService,
     public storage: Storage
-  ) {}
+  ) {
+    
+  }
 
   ionViewWillLoad(){
+    this.salir = this.navParams.get("logout");
     this.storageService.setUsuarioEMPTY();
     this.getLogin().then((log:LoginModel) => {
-      console.log("log"+log);
       this.loginValue = log;
       let valoremail  = this.loginValue!=null? this.loginValue.email : '';
       let valorPass  = this.loginValue!=null? this.loginValue.password : '';
       let recordar = this.loginValue!=null? true : false;
-      console.log("login:"+ this.loginValue);
       this.validations_form = this.formBuilder.group({
         email: new FormControl(valoremail, Validators.compose([
           Validators.required,
@@ -61,6 +64,10 @@ export class LoginPage {
         ])),
         recordarLogin: new FormControl(recordar, Validators.compose([]))
       });
+      
+      if(!this.salir && valoremail!=null && valorPass!=null && recordar) {
+        this.tryLogin({email:valoremail,password:valorPass,recordarLogin:recordar});
+      }
     });
     
     this.validations_form = this.formBuilder.group({
@@ -77,7 +84,7 @@ export class LoginPage {
   }
 
   tryLogin(value){
-    console.log("RECORDAR:"+value.recordarLogin);
+    
     this.presentLoading();
     this.authService.doLogin(value)
     .then(res => {

@@ -1,6 +1,6 @@
 export class UsuarioModel{
     
-    constructor(public key:String, public nombreUsuario: String,public saldo: number, public imagen:String, public email:string){}
+    constructor(public key:String, public nombreUsuario: String,public saldo: number, public imagen:String, public email:String){}
     
     static fromJSON(data: any){
         //console.log(data.picture);

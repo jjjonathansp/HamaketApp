@@ -1,5 +1,5 @@
 export class RelaUsuGrupoModel{
-    constructor(public key:string,public grupo: string,public usuario:string, public admin:boolean){}
+    constructor(public key:String,public grupo: String,public usuario:String, public admin:boolean){}
     
     static fromJSON(data: any){
         //console.log(data.picture);

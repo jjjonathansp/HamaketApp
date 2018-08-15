@@ -165,7 +165,8 @@ export class FirebaseService {
       let currentUser = firebase.auth().currentUser;
       this.afs.collection('people').doc(currentUser.uid).collection(RELA_GRUPO_USUARIO_TABLE, ref => ref.where('usuario', '==', userId)).snapshotChanges().subscribe(snapshots => {
         let relaciones:Array<RelaUsuGrupoModel> = [];
-        if(snapshots) {
+        if(snapshots && snapshots.length>0) {
+          
           for(let i=0;i<snapshots.length;i++) {
             let relacion = RelaUsuGrupoModel.fromFB(snapshots[i]);
             relaciones.push(relacion);
@@ -177,6 +178,8 @@ export class FirebaseService {
       
     });
   }
+
+  
 
   addRelaGrupoUsuario(relaGrupousuario:RelaUsuGrupoModel) {
     return new Promise<any>((resolve, reject) => {
@@ -218,7 +221,7 @@ export class FirebaseService {
       this.afs.collection('people').doc(currentUser.uid).collection(GRUPOS_TABLE).add({
         nombre: grupo.nombre,
         saldo: grupo.saldo,
-        clave: grupo.clave ? this.codificar(grupo.clave): ""
+        clave: grupo.clave ? this.codificar(grupo.clave.toString()): ""
       })
       .then(
         res => {resolve(new GrupoModel(res.id,grupo.nombre,grupo.saldo,grupo.clave));},
@@ -241,6 +244,36 @@ export class FirebaseService {
         err => reject(err)
       )
     })
+  }
+  getGruposUsuario(listaClaves:Array<RelaUsuGrupoModel>){
+    let grupos:Array<GrupoModel> = [];
+    return new Promise<any>((resolve) => {
+      let currentUser = firebase.auth().currentUser;
+      this.afs.collection('people').doc(currentUser.uid).collection(GRUPOS_TABLE).snapshotChanges().subscribe(snapshots => {
+        
+        if(snapshots) {
+          for(let i=0;i<snapshots.length;i++) {
+            let relacion = GrupoModel.fromFB(snapshots[i]);
+            relacion.clave = this.descodificar(relacion.clave.toString());
+            if(this.grupoContieneId(listaClaves,relacion.key))
+            grupos.push(relacion);
+          }
+        }
+        
+        resolve(grupos);
+      });
+      
+    });
+  }
+
+  grupoContieneId(relaciones:Array<RelaUsuGrupoModel>, clave: String): boolean {
+    
+    for(let i=0;i<relaciones.length;i++) {
+      if(relaciones[i].grupo == clave) {
+        return true;
+      }
+    }
+    return false;
   }
 
   //--------------------------------------------------------------------------------------------------------------------------------------------------------

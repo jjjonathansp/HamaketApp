@@ -15,4 +15,39 @@
 
 <ion-content padding>
 
+    
+    <div class="spacer" style="width:300px;height:36px;" id="nuevoGrupo-spacer7"></div>
+    <ion-item id="">
+      <ion-label color="primary">
+        Nombre grupo:
+      </ion-label>
+      <ion-input type="text" placeholder="nombre..." name="nombre" [(ngModel)]="grupo.nombre" required></ion-input>
+    </ion-item>
+  <div class="spacer" style="width:300px;height:36px;" id="nuevoGrupo-spacer8"></div>
+  <div id="nuevoGrupo-markdown3" class="show-list-numbers-and-dots">
+    <p style="color:#000000;">
+      ¿Quieres proteger el grupo con una
+      <strong>
+        contraseña
+      </strong>
+      ?
+    </p>
+    <p style="color:#0000 00;">
+      Si no lo haces de esta forma, cualquier persona podrá acceder libremente y formar parte del grupo.
+    </p>
+  </div>
+  <div class="spacer" style="width:300px;height:36px;" id="nuevoGrupo-spacer9"></div>
+    <ion-item id="nuevoGrupo-input3">
+      <ion-label color="primary">
+        Contraseña:
+      </ion-label>
+      <ion-input type="password" placeholder="contraseña..." [(ngModel)]="grupo.clave" name="clave"></ion-input>
+    </ion-item>
+    <div class="spacer" style="width:300px;height:36px;" id="nuevoGrupo-spacer10"></div>
+
+  <button id="nuevoGrupo-button9" ion-button color="positive" block (click)="guardarGrupo()">
+    <ion-icon name="checkmark"></ion-icon>
+    &nbsp;Guardar
+  </button>
+
 </ion-content>

@@ -34,7 +34,7 @@ export class MyApp {
     this.authService.doLogout()
     .then(res => {
       console.log("logout");
-      this.nav.setRoot(LoginPage);
+      this.nav.setRoot(LoginPage, {"logout":true});
     })
   }
 }

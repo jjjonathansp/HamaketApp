@@ -1,5 +1,5 @@
 export class GrupoModel{
-    constructor(public key:String,public nombre: String,public saldo: number, public clave:string){}
+    constructor(public key:String,public nombre: String,public saldo: number, public clave:String){}
     
     static fromJSON(data: any){
         //console.log(data.picture);
@@ -7,5 +7,15 @@ export class GrupoModel{
             throw(new Error("Estructura de JSON incorrecta"));
         }
         return new GrupoModel(data.key,data.nombre,data.saldo,data.clave);
+    }
+
+    static fromFB(grupo:any) {
+        if(!grupo.payload.doc.data().nombre) {
+            throw(new Error("Estructura de JSON incorrecta"));
+        }
+        return new GrupoModel(grupo.payload.doc._key.path.get(3),
+        grupo.payload.doc.data().nombre.toString(),
+        grupo.payload.doc.data().saldo,
+        grupo.payload.doc.data().clave);
     }
 }
