@@ -47,7 +47,7 @@
 </ion-grid>
   
   
-  <button menuClose ion-item *ngFor="let g of grupos">
+  <button menuClose ion-item *ngFor="let g of grupos;let i = index" (click)="mostrarPaginaGrupo(i)">
           {{g.nombre}}
           <ion-icon name="arrow-dropright" item-right></ion-icon>
         </button>

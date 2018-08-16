@@ -134,7 +134,7 @@ export class FirebaseService {
         email: currentUser.email
       })
       .then(
-        res => {resolve(new UsuarioModel(res.id,usuario.nombreUsuario,usuario.saldo,usuario.imagen,usuario.email));},
+        res => {resolve(new UsuarioModel(res.id,usuario.nombreUsuario,usuario.saldo,usuario.imagen,usuario.email,false));},
         err => reject(err)
       )
     })
@@ -157,9 +157,63 @@ export class FirebaseService {
     })
   }
 
+  getUsuariosGrupo(listaClaves:Array<RelaUsuGrupoModel>){
+    let usuarios:Array<UsuarioModel> = [];
+    console.log("getUsuariosGrupo");
+    return new Promise<any>((resolve) => {
+      let currentUser = firebase.auth().currentUser;
+      this.afs.collection('people').doc(currentUser.uid).collection(USUARIOS_TABLE).snapshotChanges().subscribe(snapshots => {
+        
+        if(snapshots!=null && snapshots.length>0) {
+          for(let i=0;i<snapshots.length;i++) {
+              
+            let relacion = UsuarioModel.fromFBFull(snapshots[i]);
+            let indexRela = this.relacionContieneMiembro(listaClaves,relacion.key);
+            if(indexRela != null){
+              relacion.admin = listaClaves[indexRela].admin;
+              usuarios.push(relacion);
+            }
+          }
+        }
+        
+        resolve(usuarios);
+      });
+      
+    });
+  }
+
+  relacionContieneMiembro(relaciones:Array<RelaUsuGrupoModel>, clave: String): number {
+    for(let i=0;i<relaciones.length;i++) {
+      if(relaciones[i].usuario == clave) {
+        return i;
+      }
+    }
+    return null;
+  }
+
   //--------------------------------------------------------------------------------------------------------------------------------------------------------
   // RELACION GRUPO Y USUARIO--------------------------------------------------------------------------------------------------------------------------------
   //--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  getRelaGruposUsuarioByGroup(groupId:String){
+    return new Promise<any>((resolve) => {
+      let currentUser = firebase.auth().currentUser;
+      this.afs.collection('people').doc(currentUser.uid).collection(RELA_GRUPO_USUARIO_TABLE, ref => ref.where('grupo', '==', groupId)).snapshotChanges().subscribe(snapshots => {
+        let relaciones:Array<RelaUsuGrupoModel> = [];
+        if(snapshots && snapshots.length>0) {
+          
+          for(let i=0;i<snapshots.length;i++) {
+            let relacion = RelaUsuGrupoModel.fromFB(snapshots[i]);
+            relaciones.push(relacion);
+          }
+        }
+        
+        resolve(relaciones);
+      });
+      
+    });
+  }
+
   getRelaGruposUsuario(userId:String){
     return new Promise<any>((resolve) => {
       let currentUser = firebase.auth().currentUser;
@@ -224,7 +278,7 @@ export class FirebaseService {
         clave: grupo.clave ? this.codificar(grupo.clave.toString()): ""
       })
       .then(
-        res => {resolve(new GrupoModel(res.id,grupo.nombre,grupo.saldo,grupo.clave));},
+        res => {resolve(new GrupoModel(res.id,grupo.nombre,grupo.saldo,grupo.clave,false));},
         err => reject(err)
       )
     })
@@ -255,8 +309,13 @@ export class FirebaseService {
           for(let i=0;i<snapshots.length;i++) {
             let relacion = GrupoModel.fromFB(snapshots[i]);
             relacion.clave = this.descodificar(relacion.clave.toString());
-            if(this.grupoContieneId(listaClaves,relacion.key))
-            grupos.push(relacion);
+            let indexRela = this.grupoContieneId(listaClaves,relacion.key);
+            if(indexRela != null){
+              if(listaClaves[indexRela].admin){
+                relacion.admin = true;
+              }
+              grupos.push(relacion);
+            }
           }
         }
         
@@ -266,14 +325,14 @@ export class FirebaseService {
     });
   }
 
-  grupoContieneId(relaciones:Array<RelaUsuGrupoModel>, clave: String): boolean {
+  grupoContieneId(relaciones:Array<RelaUsuGrupoModel>, clave: String): number {
     
     for(let i=0;i<relaciones.length;i++) {
       if(relaciones[i].grupo == clave) {
-        return true;
+        return i;
       }
     }
-    return false;
+    return null;
   }
 
   //--------------------------------------------------------------------------------------------------------------------------------------------------------

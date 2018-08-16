@@ -19,7 +19,7 @@ import { RelaUsuGrupoModel } from '../../shared/relaUsuGrupoModel';
 })
 export class NuevoGrupoPage {
   usuarioLogado: UsuarioModel = null;
-  grupo: GrupoModel = new GrupoModel("","",0,"");
+  grupo: GrupoModel = new GrupoModel("","",0,"",null);
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public firebaseService:FirebaseService, public alertCtrl:AlertController) {
 

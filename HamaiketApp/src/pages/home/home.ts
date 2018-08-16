@@ -7,6 +7,7 @@ import { PerfilUsuarioPage } from '../perfil-usuario/perfil-usuario';
 import { NuevoGrupoPage } from '../nuevo-grupo/nuevo-grupo';
 import { GrupoModel } from '../../shared/grupoModel';
 import { RelaUsuGrupoModel } from '../../shared/relaUsuGrupoModel';
+import { GrupoPage } from '../grupo/grupo';
 
 @Component({
   selector: 'page-home',
@@ -15,7 +16,7 @@ import { RelaUsuGrupoModel } from '../../shared/relaUsuGrupoModel';
 export class HomePage {
   loader = null;
   grupos:Array<GrupoModel> = [];
-  usuarioLogado:UsuarioModel = new UsuarioModel("","",0,"./assets/imgs/anonimo.png","");
+  usuarioLogado:UsuarioModel = new UsuarioModel("","",0,"./assets/imgs/anonimo.png","",false);
   constructor(
     public navCtrl: NavController,
     public storageService: StorageService,
@@ -49,6 +50,14 @@ export class HomePage {
     });
     
 
+  }
+
+  mostrarPaginaGrupo(index:number){
+      if(this.grupos[index].admin) {
+        this.navCtrl.push(GrupoPage,{"admin":true, "grupo":this.grupos[index]});
+      } else {
+        this.navCtrl.push(GrupoPage,{"admin":false,"grupo":this.grupos[index]});
+      }
   }
 
   abrirPaginaPerfil() {

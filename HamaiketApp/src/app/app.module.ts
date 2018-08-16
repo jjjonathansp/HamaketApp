@@ -27,6 +27,8 @@ import { StorageService } from '../pages/services/storage.service';
 import { PerfilUsuarioPage } from '../pages/perfil-usuario/perfil-usuario';
 import { CambiarAvatarPage } from '../pages/cambiar-avatar/cambiar-avatar';
 import { NuevoGrupoPage } from '../pages/nuevo-grupo/nuevo-grupo';
+import { GrupoPage } from '../pages/grupo/grupo';
+import { AdministrarMiembrosPage } from '../pages/administrar-miembros/administrar-miembros';
 
 
 @NgModule({
@@ -40,6 +42,8 @@ import { NuevoGrupoPage } from '../pages/nuevo-grupo/nuevo-grupo';
     PerfilUsuarioPage,
     CambiarAvatarPage,
     NuevoGrupoPage,
+    GrupoPage,
+    AdministrarMiembrosPage,
     DetailsPage
   ],
   imports: [
@@ -66,6 +70,8 @@ import { NuevoGrupoPage } from '../pages/nuevo-grupo/nuevo-grupo';
     NewTaskModalPage,
     CambiarAvatarPage,
     NuevoGrupoPage,
+    GrupoPage,
+    AdministrarMiembrosPage,
     DetailsPage
   ],
   providers: [

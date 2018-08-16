@@ -1,0 +1,62 @@
+<!--
+  Generated template for the GrupoPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>grupo</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <h1 id="grupo-heading3" style="color:#000000;">
+    Everis
+  </h1>
+  <div id="grupo-markdown2" class="show-list-numbers-and-dots">
+    <p style="color:#000000;font-size:18px;">
+      Saldo disponible:
+      <strong>
+        15€
+      </strong>
+    </p>
+  </div>
+  <ion-grid>
+  <ion-row>
+    <ion-col col-2></ion-col>
+    <ion-col col-8 text-center class="inactivo-text"><ion-icon name="cafe" color="danger" class=""></ion-icon>&nbsp;Pedido {{pedidoActivo?'Activo':'Inactivo'}}</ion-col>
+    <ion-col col-2></ion-col>
+  </ion-row>
+  </ion-grid>
+  
+  <div class="spacer" style="width:300px;height:13px;"></div>
+  <div [hidden]="!admin">
+  <button id="grupo-button5" ion-button color="dark" block icon-left (click)="gestionarMiembros()">
+    <ion-icon name="people"></ion-icon>
+    Gestionar Miembros
+  </button>
+  <button id="grupo-button5" ion-button color="dark" block icon-left>
+    <ion-icon name="logo-bitcoin"></ion-icon>
+    Actualizar Saldo
+  </button>
+  <button id="grupo-button7" ion-button color="dark" block icon-left>
+    <ion-icon name="list"></ion-icon>
+    Gestionar Pedidos
+  </button>
+  <button id="grupo-button6" ion-button color="dark" block icon-left>
+    <ion-icon name="star"></ion-icon>
+    Pedidos Favoritos
+  </button>
+  <div class="spacer" style="width:300px;height:24px;" id="grupo-spacer6"></div>
+  <button id="grupo-button15" ion-button color="danger" block>
+    Modificar pedido
+  </button>
+  <button id="grupo-button8" ion-button color="positive" block icon-left>
+    Ver pedido
+  </button>
+  </div>
+</ion-content>
