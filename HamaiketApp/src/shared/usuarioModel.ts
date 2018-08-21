@@ -13,7 +13,7 @@ export class UsuarioModel{
         if(usuario[0].payload.doc.data().nombreUsuario==undefined || usuario[0].payload.doc.data().nombreUsuario==null || usuario[0].payload.doc.data().nombreUsuario=="") {
             throw(new Error("Estructura de JSON incorrecta"));
         }
-        return new UsuarioModel(usuario[0].payload.doc._key.path.get(3),
+        return new UsuarioModel(usuario[0].payload.doc._key.path.get(1),
         usuario[0].payload.doc.data().nombreUsuario.toString(),
         usuario[0].payload.doc.data().saldo,
         usuario[0].payload.doc.data().imagen.toString(),
@@ -24,7 +24,7 @@ export class UsuarioModel{
         if(usuario.payload.doc.data().nombreUsuario==undefined || usuario.payload.doc.data().nombreUsuario==null || usuario.payload.doc.data().nombreUsuario=="") {
             throw(new Error("Estructura de JSON incorrecta"));
         }
-        return new UsuarioModel(usuario.payload.doc._key.path.get(3),
+        return new UsuarioModel(usuario.payload.doc._key.path.get(1),
         usuario.payload.doc.data().nombreUsuario.toString(),
         usuario.payload.doc.data().saldo,
         usuario.payload.doc.data().imagen.toString(),

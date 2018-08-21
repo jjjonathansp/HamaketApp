@@ -13,7 +13,7 @@ export class GrupoModel{
         if(!grupo.payload.doc.data().nombre) {
             throw(new Error("Estructura de JSON incorrecta"));
         }
-        return new GrupoModel(grupo.payload.doc._key.path.get(3),
+        return new GrupoModel(grupo.payload.doc._key.path.get(1),
         grupo.payload.doc.data().nombre.toString(),
         grupo.payload.doc.data().saldo,
         grupo.payload.doc.data().clave,

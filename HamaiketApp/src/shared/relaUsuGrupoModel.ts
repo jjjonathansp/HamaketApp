@@ -12,7 +12,7 @@ export class RelaUsuGrupoModel{
         if(!rela.payload.doc.data().grupo) {
             throw(new Error("Estructura de JSON incorrecta"));
         }
-        return new RelaUsuGrupoModel(rela.payload.doc._key.path.get(3),
+        return new RelaUsuGrupoModel(rela.payload.doc._key.path.get(1),
         rela.payload.doc.data().grupo.toString(),
         rela.payload.doc.data().usuario,
         rela.payload.doc.data().admin);

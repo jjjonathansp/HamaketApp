@@ -7,7 +7,13 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>grupo</ion-title>
+    <ion-title>Grupo</ion-title>
+    <ion-buttons end>
+      <button ion-button outline (click)="nuevoPedido()">
+        <ion-icon name="add"></ion-icon>
+        &nbsp;Nuevo Pedido
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -25,13 +31,13 @@
       </strong>
     </p>
   </div>
-  <ion-grid>
+  <!--<ion-grid>
   <ion-row>
     <ion-col col-2></ion-col>
     <ion-col col-8 text-center class="inactivo-text"><ion-icon name="cafe" color="danger" class=""></ion-icon>&nbsp;Pedido {{pedidoActivo?'Activo':'Inactivo'}}</ion-col>
     <ion-col col-2></ion-col>
   </ion-row>
-  </ion-grid>
+  </ion-grid>-->
   
   <div class="spacer" style="width:300px;height:13px;"></div>
   <div [hidden]="!admin">
@@ -45,18 +51,18 @@
   </button>
   <button id="grupo-button7" ion-button color="dark" block icon-left>
     <ion-icon name="list"></ion-icon>
-    Gestionar Pedidos
+    Histórico
   </button>
   <button id="grupo-button6" ion-button color="dark" block icon-left>
     <ion-icon name="star"></ion-icon>
     Pedidos Favoritos
   </button>
-  <div class="spacer" style="width:300px;height:24px;" id="grupo-spacer6"></div>
-  <button id="grupo-button15" ion-button color="danger" block>
-    Modificar pedido
+  <div class="spacer" style="width:300px;height:24px;" id="grupo-spacer6" ></div>
+  <button id="grupo-button15" ion-button color="danger" block (click)="modificarPedido()">
+    Modificar pedidos
   </button>
-  <button id="grupo-button8" ion-button color="positive" block icon-left>
-    Ver pedido
+  <button id="grupo-button8" ion-button color="positive" block icon-left (click)="verPedido()">
+    Ver pedidos
   </button>
   </div>
 </ion-content>

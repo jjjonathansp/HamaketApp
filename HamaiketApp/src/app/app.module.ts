@@ -29,6 +29,8 @@ import { CambiarAvatarPage } from '../pages/cambiar-avatar/cambiar-avatar';
 import { NuevoGrupoPage } from '../pages/nuevo-grupo/nuevo-grupo';
 import { GrupoPage } from '../pages/grupo/grupo';
 import { AdministrarMiembrosPage } from '../pages/administrar-miembros/administrar-miembros';
+import { PedidosGrupoPage } from '../pages/pedidos-grupo/pedidos-grupo';
+import { NuevoPedidoPage } from '../pages/nuevo-pedido/nuevo-pedido';
 
 
 @NgModule({
@@ -44,6 +46,8 @@ import { AdministrarMiembrosPage } from '../pages/administrar-miembros/administr
     NuevoGrupoPage,
     GrupoPage,
     AdministrarMiembrosPage,
+    PedidosGrupoPage,
+    NuevoPedidoPage,
     DetailsPage
   ],
   imports: [
@@ -72,6 +76,8 @@ import { AdministrarMiembrosPage } from '../pages/administrar-miembros/administr
     NuevoGrupoPage,
     GrupoPage,
     AdministrarMiembrosPage,
+    PedidosGrupoPage,
+    NuevoPedidoPage,
     DetailsPage
   ],
   providers: [

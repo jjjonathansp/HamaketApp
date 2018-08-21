@@ -4,9 +4,12 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import * as firebase from 'firebase';
 import 'firebase/storage';
 import { UsuarioModel } from "../../shared/usuarioModel";
-import { USUARIOS_TABLE, RELA_GRUPO_USUARIO_TABLE, GRUPOS_TABLE } from "../../shared/constants";
+import { USUARIOS_TABLE, RELA_GRUPO_USUARIO_TABLE, GRUPOS_TABLE, CATEGORIAS_TABLE, PEDIDOS_TABLE } from "../../shared/constants";
 import { GrupoModel } from "../../shared/grupoModel";
 import { RelaUsuGrupoModel } from "../../shared/relaUsuGrupoModel";
+import { CategoriaModel } from "../../shared/categoriaModel";
+import { ElementoModel } from "../../shared/elementoModel";
+import { PedidoModel } from "../../shared/pedidoModel";
 
 @Injectable()
 export class FirebaseService {
@@ -117,7 +120,7 @@ export class FirebaseService {
   getUsuario(){
     return new Promise<any>((resolve) => {
       let currentUser = firebase.auth().currentUser;
-      this.afs.collection('people').doc(currentUser.uid).collection(USUARIOS_TABLE, ref => ref.where('email', '==', currentUser.email)).snapshotChanges().subscribe(snapshots => {
+      this.afs.collection(USUARIOS_TABLE, ref => ref.where('email', '==', currentUser.email)).snapshotChanges().subscribe(snapshots => {
         resolve(snapshots);
       });
       
@@ -127,7 +130,7 @@ export class FirebaseService {
   saveUsuario(usuario:UsuarioModel) {
     return new Promise<any>((resolve, reject) => {
       let currentUser = firebase.auth().currentUser;
-      this.afs.collection('people').doc(currentUser.uid).collection(USUARIOS_TABLE).add({
+      this.afs.collection(USUARIOS_TABLE).add({
         nombreUsuario: usuario.nombreUsuario,
         saldo: usuario.saldo,
         imagen: usuario.imagen,
@@ -143,7 +146,7 @@ export class FirebaseService {
   updateUsuario(usuario){
     return new Promise<any>((resolve, reject) => {
       let currentUser = firebase.auth().currentUser;
-      this.afs.collection('people').doc(currentUser.uid).collection(USUARIOS_TABLE).doc(usuario.key).set(
+      this.afs.collection(USUARIOS_TABLE).doc(usuario.key).set(
         {
           nombreUsuario:usuario.nombreUsuario,
           saldo:usuario.saldo,
@@ -162,7 +165,7 @@ export class FirebaseService {
     console.log("getUsuariosGrupo");
     return new Promise<any>((resolve) => {
       let currentUser = firebase.auth().currentUser;
-      this.afs.collection('people').doc(currentUser.uid).collection(USUARIOS_TABLE).snapshotChanges().subscribe(snapshots => {
+      this.afs.collection(USUARIOS_TABLE).snapshotChanges().subscribe(snapshots => {
         
         if(snapshots!=null && snapshots.length>0) {
           for(let i=0;i<snapshots.length;i++) {
@@ -198,7 +201,7 @@ export class FirebaseService {
   getRelaGruposUsuarioByGroup(groupId:String){
     return new Promise<any>((resolve) => {
       let currentUser = firebase.auth().currentUser;
-      this.afs.collection('people').doc(currentUser.uid).collection(RELA_GRUPO_USUARIO_TABLE, ref => ref.where('grupo', '==', groupId)).snapshotChanges().subscribe(snapshots => {
+      this.afs.collection(RELA_GRUPO_USUARIO_TABLE, ref => ref.where('grupo', '==', groupId)).snapshotChanges().subscribe(snapshots => {
         let relaciones:Array<RelaUsuGrupoModel> = [];
         if(snapshots && snapshots.length>0) {
           
@@ -217,7 +220,7 @@ export class FirebaseService {
   getRelaGruposUsuario(userId:String){
     return new Promise<any>((resolve) => {
       let currentUser = firebase.auth().currentUser;
-      this.afs.collection('people').doc(currentUser.uid).collection(RELA_GRUPO_USUARIO_TABLE, ref => ref.where('usuario', '==', userId)).snapshotChanges().subscribe(snapshots => {
+      this.afs.collection(RELA_GRUPO_USUARIO_TABLE, ref => ref.where('usuario', '==', userId)).snapshotChanges().subscribe(snapshots => {
         let relaciones:Array<RelaUsuGrupoModel> = [];
         if(snapshots && snapshots.length>0) {
           
@@ -238,7 +241,7 @@ export class FirebaseService {
   addRelaGrupoUsuario(relaGrupousuario:RelaUsuGrupoModel) {
     return new Promise<any>((resolve, reject) => {
       let currentUser = firebase.auth().currentUser;
-      this.afs.collection('people').doc(currentUser.uid).collection(RELA_GRUPO_USUARIO_TABLE).add({
+      this.afs.collection(RELA_GRUPO_USUARIO_TABLE).add({
         grupo: relaGrupousuario.grupo,
         usuario: relaGrupousuario.usuario,
         admin: relaGrupousuario.admin
@@ -253,7 +256,7 @@ export class FirebaseService {
   updateRelaGrupoUsuario(relaGrupousuario){
     return new Promise<any>((resolve, reject) => {
       let currentUser = firebase.auth().currentUser;
-      this.afs.collection('people').doc(currentUser.uid).collection(RELA_GRUPO_USUARIO_TABLE).doc(relaGrupousuario.key).set(
+      this.afs.collection(RELA_GRUPO_USUARIO_TABLE).doc(relaGrupousuario.key).set(
         {
           grupo: relaGrupousuario.grupo,
           usuario: relaGrupousuario.usuario,
@@ -272,7 +275,7 @@ export class FirebaseService {
   addGrupo(grupo:GrupoModel) {
     return new Promise<any>((resolve, reject) => {
       let currentUser = firebase.auth().currentUser;
-      this.afs.collection('people').doc(currentUser.uid).collection(GRUPOS_TABLE).add({
+      this.afs.collection(GRUPOS_TABLE).add({
         nombre: grupo.nombre,
         saldo: grupo.saldo,
         clave: grupo.clave ? this.codificar(grupo.clave.toString()): ""
@@ -287,7 +290,7 @@ export class FirebaseService {
   updateGrupo(grupo){
     return new Promise<any>((resolve, reject) => {
       let currentUser = firebase.auth().currentUser;
-      this.afs.collection('people').doc(currentUser.uid).collection(GRUPOS_TABLE).doc(grupo.key).set(
+      this.afs.collection(GRUPOS_TABLE).doc(grupo.key).set(
         {
           nombre: grupo.nombre,
           saldo: grupo.saldo,
@@ -303,7 +306,7 @@ export class FirebaseService {
     let grupos:Array<GrupoModel> = [];
     return new Promise<any>((resolve) => {
       let currentUser = firebase.auth().currentUser;
-      this.afs.collection('people').doc(currentUser.uid).collection(GRUPOS_TABLE).snapshotChanges().subscribe(snapshots => {
+      this.afs.collection(GRUPOS_TABLE).snapshotChanges().subscribe(snapshots => {
         
         if(snapshots) {
           for(let i=0;i<snapshots.length;i++) {
@@ -334,6 +337,93 @@ export class FirebaseService {
     }
     return null;
   }
+
+  //--------------------------------------------------------------------------------------------------------------------------------------------------------
+  //CATEGORIA ---------------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+  /*addCategoria(categoria:CategoriaModel) {
+    return new Promise<any>((resolve, reject) => {
+      let currentUser = firebase.auth().currentUser;
+      this.afs.collection(CATEGORIAS_TABLE).add({
+        nombre: categoria.nombre,
+        imagen: categoria.imagen
+      })
+      .then(
+        res => {resolve(new CategoriaModel(res.id,categoria.nombre,categoria.imagen));},
+        err => reject(err)
+      )
+    })
+  }*/
+
+  getCategorias(){
+    let categorias:Array<CategoriaModel> = [];
+    return new Promise<any>((resolve) => {
+      let currentUser = firebase.auth().currentUser;
+      this.afs.collection(CATEGORIAS_TABLE,ref => ref.orderBy('nombre', 'asc')).snapshotChanges().subscribe(snapshots => {
+        
+        if(snapshots!=null && snapshots.length>0) {
+          
+          for(let i=0;i<snapshots.length;i++) {
+            let relacion = CategoriaModel.fromFB(snapshots[i]);
+            categorias.push(relacion);
+          }
+        }
+        
+        resolve(categorias);
+      });
+      
+    });
+  }
+
+  
+ 
+  //--------------------------------------------------------------------------------------------------------------------------------------------------------
+ //ELEMENTO ---------------------------------------------------------------------------------------------------------------------------
+ //--------------------------------------------------------------------------------------------------------------------------------------------------------
+ getSubCategoriaElements(categoriaCollection:string, subcategoriaCollection:string){
+  let elementos:Array<ElementoModel> = [];
+  return new Promise<any>((resolve) => {
+    let currentUser = firebase.auth().currentUser;
+    this.afs.collection(CATEGORIAS_TABLE).doc(categoriaCollection).collection(subcategoriaCollection,ref => ref.orderBy('nombre', 'asc')).snapshotChanges().subscribe(snapshots => {
+      
+      if(snapshots!=null && snapshots.length>0) {
+        
+        for(let i=0;i<snapshots.length;i++) {
+          let relacion = ElementoModel.fromFB(snapshots[i]);
+          elementos.push(relacion);
+        }
+      }
+      
+      resolve(elementos);
+    });
+    
+  });
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------
+//PEDIDO ---------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------
+getPedidosActivosDia(dd:Number,mm:Number,yyyy:Number, grupo:String){
+  let pedidos:Array<PedidoModel> = [];
+  return new Promise<any>((resolve) => {
+    let currentUser = firebase.auth().currentUser;
+    this.afs.collection(PEDIDOS_TABLE,ref => ref.where('grupo', '==',grupo).where('activo', '==',true).where('dd', '==',dd).where('mm','==',mm).where('yyyy','==',yyyy)).snapshotChanges().subscribe(snapshots => {
+      
+      if(snapshots!=null && snapshots.length>0) {
+        
+        for(let i=0;i<snapshots.length;i++) {
+          let relacion = PedidoModel.fromFB(snapshots[i]);
+          pedidos.push(relacion);
+        }
+      }
+      
+      resolve(pedidos);
+    });
+    
+  });
+}
+
 
   //--------------------------------------------------------------------------------------------------------------------------------------------------------
   //CODIFICAR

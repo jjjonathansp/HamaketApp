@@ -16,7 +16,7 @@ import { CambiarAvatarPage } from '../cambiar-avatar/cambiar-avatar';
 export class PerfilUsuarioPage {
   guardado:boolean = false;
   loginUsuario:LoginModel = null;
-  usuarioLogado:UsuarioModel = new UsuarioModel("","",0, "./assets/imgs/anonimo.png", "");
+  usuarioLogado:UsuarioModel = new UsuarioModel("","",0, "./assets/imgs/anonimo.png", "",false);
   constructor(public navCtrl: NavController,
     public storageService: StorageService,
     public authService: AuthService,
@@ -53,7 +53,7 @@ export class PerfilUsuarioPage {
             this.guardado = true;
           } else {
             console.log("Usuario sin guardar en BBDD.");
-            this.usuarioLogado = new UsuarioModel("","",0, "./assets/imgs/anonimo.png","");
+            this.usuarioLogado = new UsuarioModel("","",0, "./assets/imgs/anonimo.png","",false);
           }
         });
 

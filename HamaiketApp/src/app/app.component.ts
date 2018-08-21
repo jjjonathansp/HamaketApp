@@ -27,6 +27,7 @@ export class MyApp {
 
     this.pages = [
       { title: 'Inicio',icon:"home", component: HomePage },
+      { title: 'Buscar grupo',icon:"people", component: HomePage },
     ];
   }
 
@@ -36,5 +37,9 @@ export class MyApp {
       console.log("logout");
       this.nav.setRoot(LoginPage, {"logout":true});
     })
+  }
+
+  abrirPagina(p:any) {
+    this.nav.setRoot(p.component);
   }
 }

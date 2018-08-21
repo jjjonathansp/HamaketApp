@@ -1,0 +1,32 @@
+<!--
+  Generated template for the NuevoPedidoPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Nuevo Pedido</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="carrito()">
+        <ion-icon name="cart"></ion-icon>
+        <ion-badge color="danger">{{cantidadElementos}}</ion-badge>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding class="card-background-page">
+      <ion-card *ngFor="let categoria of categorias" (click) = "seleccionadaCategoria(categoria)">
+          <img [src]="categoria.imagen"/>
+          <div class="card-title">{{categoria.nombre}}</div>
+          <div class="card-subtitle"></div>
+      </ion-card>
+
+    
+    
+
+</ion-content>
