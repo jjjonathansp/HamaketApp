@@ -37,8 +37,10 @@ export class AdministrarMiembrosPage {
 
     this.firebaseService.getRelaGruposUsuarioByGroup(this.grupo.key).then((relaciones:Array<RelaUsuGrupoModel>)=>{
       if(relaciones!=null && relaciones.length>0) {
+        console.log("relaciones?"+relaciones.length);
         this.firebaseService.getUsuariosGrupo(relaciones).then((usuarios:Array<UsuarioModel>)=>{
             this.miembros = usuarios;
+            console.log("miembros?"+this.miembros.length);
         })
         
 
