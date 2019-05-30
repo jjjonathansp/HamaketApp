@@ -383,6 +383,8 @@ export class FirebaseService {
  //--------------------------------------------------------------------------------------------------------------------------------------------------------
  getSubCategoriaElements(categoriaCollection:string, subcategoriaCollection:string){
   let elementos:Array<ElementoModel> = [];
+  console.log("categoriaCollection:"+categoriaCollection);
+  console.log("subcategoriaCollection:"+subcategoriaCollection);
   return new Promise<any>((resolve) => {
     let currentUser = firebase.auth().currentUser;
     this.afs.collection(CATEGORIAS_TABLE).doc(categoriaCollection).collection(subcategoriaCollection,ref => ref.orderBy('nombre', 'asc')).snapshotChanges().subscribe(snapshots => {

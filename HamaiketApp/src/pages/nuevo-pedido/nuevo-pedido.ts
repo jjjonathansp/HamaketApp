@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { FirebaseService } from '../services/firebase.service';
 import { GrupoModel } from '../../shared/grupoModel';
 import { CategoriaModel } from '../../shared/categoriaModel';
@@ -19,6 +19,7 @@ import { ElementoModel } from '../../shared/elementoModel';
 })
 export class NuevoPedidoPage {
 
+  loader = null;
   elementosPedido:Array<ElementoModel> = [];
   cantidadElementos:Number = 0;
   grupo:GrupoModel = null;
@@ -26,6 +27,9 @@ export class NuevoPedidoPage {
   
   subcategorias:Array<ElementoModel> = [];
 
+  categoriaSelected:CategoriaModel = null;
+  collectionSelected:String = null;
+  elementosSelected:Array<ElementoModel> = [];
   testCheckboxOpen = false;
   testCheckboxResult: any;
   testRadioOpen = false;
@@ -35,7 +39,8 @@ export class NuevoPedidoPage {
     public navCtrl: NavController, 
     public navParams: NavParams,
     public firebaseService: FirebaseService,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public loadingCtrl:LoadingController
   ) {
     this.grupo = navParams.get("grupo");
   }
@@ -53,6 +58,7 @@ export class NuevoPedidoPage {
 
   seleccionadaCategoria(cat:CategoriaModel) {
     let lista:Array<any> = [];
+    this.categoriaSelected = cat;
     for(let i=0;i<cat.collections.length;i++) {
       lista.push({type:"radio",label:cat.collections[i].split("/")[1],value:i});
     }
@@ -75,8 +81,10 @@ export class NuevoPedidoPage {
     alert.addButton({
       text: 'Cancelar',
       handler: (data: any) => {
+        this.categoriaSelected = null;
         this.testRadioOpen = false;
         this.testRadioResult = null;
+        this.collectionSelected = null;
         
       }
     });
@@ -84,6 +92,7 @@ export class NuevoPedidoPage {
       text: 'Aceptar',
       handler: (data: any) => {
         console.log('Radio data:', data);
+        this.collectionSelected = this.categoriaSelected.collections[data];
         this.testRadioOpen = false;
         this.testRadioResult = data;
         
@@ -93,75 +102,56 @@ export class NuevoPedidoPage {
     alert.present();
     alert.onDidDismiss(()=>{
       if(this.testRadioResult!=undefined && this.testRadioResult!=null) {
-        this.doCheckbox();
+        this.presentLoading();
+        this.firebaseService.getSubCategoriaElements(this.categoriaSelected.key.toString(),this.collectionSelected.split("/")[0]).then((elementos:Array<ElementoModel>)=>{
+          let lista:Array<any> = [];
+          if(elementos!=null && elementos.length>0) {
+            
+            for(let i=0;i<elementos.length;i++) {
+              lista.push({type:"checkbox",label:elementos[i].nombre,value:i});
+            }
+            this.doCheckbox(lista);
+          }
+          this.dismishLoading();
+
+        });
+        
       }
     });
   }
-  doCheckbox() {
+  doCheckbox(lista:any) {
     let alert = this.alertCtrl.create({enableBackdropDismiss:false});
     alert.setTitle('Que deseas pedir?');
 
-    alert.addInput({
-        type: 'checkbox',
-        label: 'Alderaan',
-        value: 'value1'
-    });
+    for(let i=0;i<lista.length;i++) {
+      
+      alert.addInput({
+          type: lista[i].type,
+          label: lista[i].label,
+          value: lista[i].value
+      });
+    }
 
-    alert.addInput({
-        type: 'checkbox',
-        label: 'Bespin',
-        value: 'value2'
-    });
-
-    alert.addInput({
-        type: 'checkbox',
-        label: 'Coruscant',
-        value: 'value3'
-    });
-
-    alert.addInput({
-        type: 'checkbox',
-        label: 'Endor',
-        value: 'value4'
-    });
-
-    alert.addInput({
-        type: 'checkbox',
-        label: 'Hoth',
-        value: 'value5'
-    });
-
-    alert.addInput({
-        type: 'checkbox',
-        label: 'Jakku',
-        value: 'value6'
-    });
-
-    alert.addInput({
-        type: 'checkbox',
-        label: 'Naboo',
-        value: 'value6'
-    });
-
-    alert.addInput({
-        type: 'checkbox',
-        label: 'Takodana',
-        value: 'value6'
-    });
-
-    alert.addInput({
-        type: 'checkbox',
-        label: 'Tatooine',
-        value: 'value6'
-    });
-
-    alert.addButton('Cancel');
     alert.addButton({
-      text: 'Okay',
+      text: 'Cancelar',
+      handler: (data: any) => {
+        this.elementosSelected = null;
+        this.testCheckboxOpen = false;
+        this.testCheckboxResult = null;
+        this.categoriaSelected = null;
+        this.collectionSelected = null;  
+      }
+    });
+    alert.addButton({
+      text: 'Añadir',
       handler: (data: any) => {
           console.log('Checkbox data:', data);
           this.testCheckboxOpen = false;
           this.testCheckboxResult = data;
+          for(let i=0;i<data.length;i++) {
+            this.elementosPedido.push(data);
+            this.cantidadElementos = this.elementosPedido.length;
+          }
       }
     });
 
@@ -169,5 +159,17 @@ export class NuevoPedidoPage {
   }
 
   carrito(){}
+
+presentLoading() {
+    this.loader = this.loadingCtrl.create({
+      content: "Cargando..."
+      //duration: 500
+    });
+    this.loader.present();
+  }
+
+  dismishLoading() {
+    this.loader.dismiss();
+  }
 
 }
